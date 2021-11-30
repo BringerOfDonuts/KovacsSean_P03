@@ -5,8 +5,21 @@ using UnityEngine;
 public class MoveCamera : MonoBehaviour
 {
     [SerializeField] Transform cameraPosition;
+    GameObject Player;
+    Health health;
+
+    private void Start()
+    {
+        Player = GameObject.Find("Player");
+        health = Player.GetComponent<Health>();
+    }
+
     void Update()
     {
-        transform.position = cameraPosition.position;
+        if(health.playerDead == false)
+        {
+            transform.position = cameraPosition.position;
+        }
+        
     }
 }

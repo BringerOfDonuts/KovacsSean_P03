@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private float verticalMovement;
     private float movementMultiplier = 7f;
     // Air movement not needed for this project. Players move at the same speed if jumping.
-    //[SerializeField] float airMultiplier = 0.4f;
+    [SerializeField] float airMultiplier = 0.4f;
     private float groundDrag = 6f;
     private float airDrag = 2f;
 
@@ -87,7 +87,14 @@ public class PlayerMovement : MonoBehaviour
     private void ControlDrag()
     {
         // Air drag not needed to replicate TF2 movement. Use if statement to check for grounded if adding air drag
-        rb.drag = groundDrag;
+        if (isGrounded)
+        {
+            rb.drag = groundDrag;
+        }
+        else
+        {
+            rb.drag = airDrag;
+        }
     }
 
     private void FixedUpdate()
@@ -102,9 +109,13 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(slopeDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
         }
-        else
+        else if (isGrounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+        }
+        else if (!isGrounded)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
         
     }

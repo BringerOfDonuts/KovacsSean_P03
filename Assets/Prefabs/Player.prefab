@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7175986328489236939}
   - component: {fileID: 7175986328489236938}
   - component: {fileID: 7175986328489236941}
+  - component: {fileID: 1498399021}
+  - component: {fileID: 8497059629985831716}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -67,6 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 7175986328644601758}
   moveSpeed: 6
+  airMultiplier: 0.4
   jumpForce: 20
   groundCheck: {fileID: 7175986328721617372}
   groundDistance: 0.4
@@ -85,10 +88,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85efcd4f58ffd514daf05804c1dfd403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 1
-  sensY: 1
+  sensX: 2
+  sensY: 2
   cam: {fileID: 0}
   orientation: {fileID: 7175986328644601758}
+--- !u!136 &1498399021
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175986328489236937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.9490864
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.0282353, z: 0}
+--- !u!114 &8497059629985831716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175986328489236937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d0ddcd004f1db4684a82970275b438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7175986328644601757
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +267,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4e60440e6b87ac441b2e28510f2f3d4d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
