@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Player movement, jumping, slope checking. Following a Rigidbody Controller guide made by Plai.
+    // I later added sounds and adjusted some values to better match TF2's physics
+
     private float playerHeight = 2f;
 
     [SerializeField] Transform orientation;
@@ -14,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalMovement;
     private float verticalMovement;
     private float movementMultiplier = 7f;
-    // Air movement not needed for this project. Players move at the same speed if jumping.
     [SerializeField] float airMultiplier = 0.4f;
     private float groundDrag = 6f;
     private float airDrag = 2f;
@@ -34,12 +36,18 @@ public class PlayerMovement : MonoBehaviour
 
     private RaycastHit slopeHit;
 
+    [Header("Footsteps")]
+    public AudioSource footstepsSource;
+    public AudioClip[] footstepsArray;
+    private float footstepTimer = 0.5f;
+
     private bool OnSlope()
     {
         if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
         {
             if(slopeHit.normal != Vector3.up)
             {
+                // If the raycast normal is NOT perpendicular, return true.
                 return true;
             }
             else
@@ -62,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         
         MyInput();
         ControlDrag();
+        FootstepSound();
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -69,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         slopeDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
+        footstepTimer = footstepTimer - Time.deltaTime;
     }
 
     private void MyInput()
@@ -86,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ControlDrag()
     {
-        // Air drag not needed to replicate TF2 movement. Use if statement to check for grounded if adding air drag
+        // Reduce drag if airborne for faster movement
         if (isGrounded)
         {
             rb.drag = groundDrag;
@@ -104,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        // If using air drag, add air multiplier in if statement here
+        // Adds force depending on if the player is on a slope, grounded, or mid-air
         if (isGrounded && OnSlope())
         {
             rb.AddForce(slopeDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
@@ -118,5 +128,15 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
         
+    }
+
+    private void FootstepSound()
+    {
+        // Play footsteps if grounded and holding WASD. Uses a timer to prevent spam.
+        if( ( Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ) && isGrounded && footstepTimer <= 0)
+        {
+            footstepsSource.PlayOneShot(footstepsArray[Random.Range(0, footstepsArray.Length)]);
+            footstepTimer = 0.5f;
+        }
     }
 }

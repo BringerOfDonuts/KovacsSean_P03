@@ -16,6 +16,7 @@ public class MoveCamera : MonoBehaviour
 
     void Update()
     {
+        // Move camera as long as the player is not dead
         if(health.playerDead == false)
         {
             transform.position = cameraPosition.position;

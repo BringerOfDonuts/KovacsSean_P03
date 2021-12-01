@@ -12,31 +12,54 @@ public class RocketFire : MonoBehaviour
 
     [SerializeField] GameObject rocket;
     [SerializeField] Transform barrel;
-    
+
+    public AudioSource fireSource;
+    public AudioSource reloadSource;
+
+    private Animator anim;
+
+    LevelController levelController;
+
+    private void Start()
+    {
+        levelController = GameObject.Find("Level Controller").GetComponent<LevelController>();
+        anim = gameObject.GetComponent<Animator>();
+    }
 
     void Update()
     {
+        if(rocketsLoaded <= 0)
+        {
+            canFire = false;
+        }
         
+        // Fire rocket if player is able to and clicked left-mouse. Update UI and play sound.
         if (Input.GetKeyDown(KeyCode.Mouse0) && canFire)
         {
             fireDelay = 1f;
             canFire = false;
+            reloading = false;
             rocketsLoaded -= 1;
             FireRocket();
+            fireSource.Play();
+            anim.Play("FireAnimation");
+            levelController.UIFire(rocketsLoaded);
             Debug.Log("Ammo Loaded: " + rocketsLoaded);
             Debug.Log("Ammo in Reserves: " + rocketAmmo);
         }
 
-        if (rocketsLoaded <= 0 && reloading == false)
+        // Check if player can reload and if they are not already reloading
+        if (Input.GetKeyDown(KeyCode.R) && rocketsLoaded < 4 && reloading == false)
         {
             canFire = false;
             reloading = true;
+            anim.Play("ReloadStart");
+            InvokeRepeating("ReloadSound", 0.5f, 1.0f);
             InvokeRepeating("Reload", 1.0f, 1.0f);
         }
 
         if(fireDelay <= 0 && rocketsLoaded > 0)
         {
-            // TODO: Maybe change to require full ammo before firing
             canFire = true;
         }
 
@@ -50,19 +73,42 @@ public class RocketFire : MonoBehaviour
 
     private void Reload()
     {
-        // TODO: ADD RELOAD ANIMATION AND SOUNDS
-        if(rocketAmmo > 0)
+        // TODO: BUG WHERE CANCELING A RELOAD BY FIRING AND RELOADING AGAIN CAUSES FASTER RELOAD (Overlapping Invokes)
+        if(reloading == true)
         {
-            rocketsLoaded += 1;
-            rocketAmmo -= 1;
-        }
+            if (rocketAmmo > 0)
+            {
+                rocketsLoaded += 1;
+                rocketAmmo -= 1;
+                anim.Play("ReloadLoop");
+                levelController.UIReload(rocketsLoaded, rocketAmmo);
+            }
 
-        if(rocketsLoaded == 4)
+            if (rocketsLoaded == 4)
+            {
+                canFire = true;
+                reloading = false;
+                anim.Play("ReloadEnd");
+                CancelInvoke();
+            }
+        }
+        else
         {
-            canFire = true;
-            reloading = false;
             CancelInvoke();
         }
         
+        
+    }
+
+    private void ReloadSound()
+    {
+        if(reloading == true)
+        {
+            reloadSource.Play();
+        }
+        else
+        {
+            CancelInvoke();
+        }
     }
 }

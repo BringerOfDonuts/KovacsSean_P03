@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
+    // Camera Movement for the player. Following a Rigidbody Controller guide made by Plai.
+    
     [SerializeField] float sensX;
     [SerializeField] float sensY;
 
@@ -20,6 +22,7 @@ public class PlayerLook : MonoBehaviour
 
     private void Start()
     {
+        // Lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

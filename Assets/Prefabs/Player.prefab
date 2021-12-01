@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8497059629985831716}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,6 +118,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d0ddcd004f1db4684a82970275b438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDead: 0
+  playerDamageMultiplier: 1
+  blood: {fileID: 0}
+  bloodParticles: {fileID: 0}
+  rocketLauncher: {fileID: 0}
+  hurtSource: {fileID: 0}
+  hurtClipArray:
+  - {fileID: 8300000, guid: 0ac6a5a217022024abcbf4cbefd1ec8c, type: 3}
+  - {fileID: 8300000, guid: 6b450607f183a6b4ba521700e6cdfb01, type: 3}
+  - {fileID: 8300000, guid: fff8e12e04dfb3e4a821d196b948c1a3, type: 3}
 --- !u!1 &7175986328644601757
 GameObject:
   m_ObjectHideFlags: 0
