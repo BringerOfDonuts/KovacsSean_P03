@@ -7,7 +7,7 @@ public class RocketFire : MonoBehaviour
     private bool canFire = true;
     private float fireDelay = 1f;
     private int rocketsLoaded = 4;
-    private int rocketAmmo = 16;
+    private int rocketAmmo = 20;
     private bool reloading = false;
 
     [SerializeField] GameObject rocket;
@@ -49,7 +49,7 @@ public class RocketFire : MonoBehaviour
         }
 
         // Check if player can reload and if they are not already reloading
-        if (Input.GetKeyDown(KeyCode.R) && rocketsLoaded < 4 && reloading == false)
+        if (Input.GetKeyDown(KeyCode.R) && rocketsLoaded < 4 && reloading == false && rocketAmmo > 0)
         {
             canFire = false;
             reloading = true;
@@ -64,6 +64,13 @@ public class RocketFire : MonoBehaviour
         }
 
         fireDelay = fireDelay - Time.deltaTime;
+
+        // Developer Cheat to Refill Ammo and Health
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            rocketAmmo = 20;
+            levelController.UIReload(rocketsLoaded, rocketAmmo);
+        }
     }
 
     private void FireRocket()

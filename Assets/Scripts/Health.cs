@@ -35,6 +35,13 @@ public class Health : MonoBehaviour
                 playerDead = true;
             }
         }
+
+        // Developer Cheat to Refill Ammo and Health
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            health = 200;
+            levelController.UIHealth(health);
+        }
     }
 
     public void TakeDamage(float distanceToRocket, Collider hit)
