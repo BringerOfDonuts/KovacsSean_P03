@@ -49,7 +49,7 @@ public class Health : MonoBehaviour
         // Checks if the player is damaged, can apply playerDamageMultiplier for reduced damage taken
         if (hit.tag == "Player")
         {
-            // Updates Player UI
+            // Updates Player UI and applies multiplier
             Debug.Log("Player has been hit");
             int playerDamageTaken = (90 - Mathf.RoundToInt((30 * distanceToRocket))) / playerDamageMultiplier;
             health -= playerDamageTaken;

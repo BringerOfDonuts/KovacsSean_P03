@@ -33,7 +33,7 @@ public class RocketFire : MonoBehaviour
             canFire = false;
         }
         
-        // Fire rocket if player is able to and clicked left-mouse. Update UI and play sound.
+        // Fire rocket if player is able to and clicked left-mouse. Update UI and play sound and animation.
         if (Input.GetKeyDown(KeyCode.Mouse0) && canFire)
         {
             fireDelay = 1f;
@@ -44,8 +44,6 @@ public class RocketFire : MonoBehaviour
             fireSource.Play();
             anim.Play("FireAnimation");
             levelController.UIFire(rocketsLoaded);
-            Debug.Log("Ammo Loaded: " + rocketsLoaded);
-            Debug.Log("Ammo in Reserves: " + rocketAmmo);
         }
 
         // Check if player can reload and if they are not already reloading
@@ -91,7 +89,7 @@ public class RocketFire : MonoBehaviour
                 levelController.UIReload(rocketsLoaded, rocketAmmo);
             }
 
-            if (rocketsLoaded == 4)
+            if (rocketsLoaded == 4 || rocketAmmo == 0)
             {
                 canFire = true;
                 reloading = false;
